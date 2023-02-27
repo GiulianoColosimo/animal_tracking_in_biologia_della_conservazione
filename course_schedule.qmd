@@ -1,0 +1,151 @@
+---
+title: "Schedule"
+author: Giuliano Colosimo
+date: "`r Sys.Date()`"
+tbl-colwidths: [5,10,15]
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(calendR)
+```
+
+::: callout-important
+## Read carefully!
+
+It is a student's responsibility to periodically check this website to make sure he/she has the most updated information about the course schedule. The dates for the final exam will be published on this website later during the course of the semester!
+:::
+
+```{r calendar1, echo=FALSE, message=FALSE, warning=FALSE, eval=T}
+# Vector of dates
+dates <- seq(as.Date("2023-03-01"), as.Date("2023-03-31"), by = "1 day")
+
+# Vector of NA and weekends
+# (with the week starting on Monday)
+events <- ifelse(format(dates, "%w") %in% c(6, 0), "Weekend", NA)
+
+events[c(17, 24, 31)] <- "Classes"
+
+calendR(year = 2023, 
+        month = 3, 
+        start = "M",
+        title = "Class calendar",
+        subtitle = "March 2023",
+        special.days = events,
+        special.col = c("#00AAAE", "gray"),
+        low.col = "white",
+        legend.pos = "bottom", # Legend position
+        legend.title = "",
+        text = "11:00-13:00",
+        text.pos = c(17, 24, 31),        
+        text.size = 2.5,              
+        text.col = "black")
+```
+
+```{r calendar_2, echo=FALSE, message=FALSE, warning=FALSE, eval=T}
+# Vector of dates
+dates <- seq(as.Date("2023-04-01"), as.Date("2023-04-30"), by = "1 day")
+
+# Vector of NA and weekends
+# (with the week starting on Monday)
+events <- ifelse(format(dates, "%w") %in% c(6, 0), "Weekend", NA)
+
+events[c(7, 14, 21, 28)] <- "Classes"
+
+calendR(year = 2023, 
+        month = 04, 
+        start = "M",
+        title = "Class calendar",
+        subtitle = "April 2023",
+        special.days = events,
+        special.col = c("#00AAAE", "gray"),
+        low.col = "white",
+        legend.pos = "bottom", # Legend position
+        legend.title = "",
+        text = "11:00-13:00",
+        text.pos = c(7, 14, 21, 28),        
+        text.size = 2.5,              
+        text.col = "black")
+```
+
+```{r calendar_3, echo=FALSE, message=FALSE, warning=FALSE, eval=T}
+# Vector of dates
+dates <- seq(as.Date("2023-05-01"), as.Date("2023-05-31"), by = "1 day")
+
+# Vector of NA and weekends
+# (with the week starting on Monday)
+events <- ifelse(format(dates, "%w") %in% c(6, 0), "Weekend", NA)
+
+events[5] <- "Classes"
+
+calendR(year = 2023, 
+        month = 5, 
+        start = "M",
+        title = "Class calendar",
+        subtitle = "May 2023",
+        special.days = events,
+        special.col = c("#00AAAE", "gray"),
+        low.col = "white",
+        legend.pos = "bottom", # Legend position
+        legend.title = "",
+        text = "11:00-13:00",             
+        text.pos = 5,        
+        text.size = 2.5,              
+        text.col = "black")
+```
+
+
+```{r calendar_4, echo=FALSE, message=FALSE, warning=FALSE, eval=T}
+# Vector of dates
+dates <- seq(as.Date("2023-06-01"), as.Date("2023-06-30"), by = "1 day")
+
+# Vector of NA and weekends
+# (with the week starting on Monday)
+events <- ifelse(format(dates, "%w") %in% c(6, 0), "Weekend", NA)
+
+#events[c(1, 5)] <- "Classes"
+#events[29] <- "Exam"
+
+calendR(year = 2023, 
+        month = 6, 
+        start = "M",
+        title = "Class calendar",
+        subtitle = "June 2023",
+        special.days = events,
+        special.col =  "gray",
+        low.col = "white",
+        legend.pos = "bottom", # Legend position
+        legend.title = "",
+        #text = c("09:00-13:00"),             
+        #text.pos = c(1, 5),        
+        #text.size = 2.5,              
+        text.col = "black")
+```
+
+
+```{r calendar_5, echo=FALSE, message=FALSE, warning=FALSE, eval=T}
+# Vector of dates
+dates <- seq(as.Date("2023-07-01"), as.Date("2023-07-31"), by = "1 day")
+
+# Vector of NA and weekends
+# (with the week starting on Monday)
+events <- ifelse(format(dates, "%w") %in% c(6, 0), "Weekend", NA)
+
+#events[c(1, 5)] <- "Classes"
+#events[29] <- "Exam"
+
+calendR(year = 2023, 
+        month = 7, 
+        start = "M",
+        title = "Class calendar",
+        subtitle = "July 2023",
+        special.days = events,
+        special.col =  "gray",
+        low.col = "white",
+        legend.pos = "bottom", # Legend position
+        legend.title = "",
+        #text = c("09:00-13:00"),             
+        #text.pos = c(1, 5),        
+        #text.size = 2.5,              
+        text.col = "black")
+```

@@ -1,0 +1,411 @@
+---
+title: "Animal tracking nella biologia della conservazione"
+subtitle: "Class 1"
+#footer:  "[http://localhost:7619/home.html](http://localhost:7619/home.html)"
+logo: ../figures/anmtbc_logo.png
+footer:  "Dr. Giuliano Colosimo"
+format: 
+  revealjs:
+    width: 1600
+    height: 900 
+    theme: slides.scss
+    multiplex: true
+    transition: fade
+    slide-number: true
+    preview-links: true
+    chalkboard: 
+      boardmarker-width: 5
+editor: visual
+from: markdown+emoji
+execute:
+  freeze: auto
+editor_options: 
+  chunk_output_type: console
+bibliography: /Users/giulianocolosimo/Dropbox/manuscripts/literature/bibtex/comprehensive_database.bib
+csl: /Users/giulianocolosimo/Dropbox/manuscripts/literature/bibtex/apa_5th_edition.csl
+citation_package: biblatex
+citecolor: "red"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+x <- c("cranlogs", "plotly")
+lapply(x, require, character.only = T)
+rm(x)
+
+```
+
+## Course overview
+
+-   This is a discretionary course for master level students enrolled in the "Biologia Evoluzionistica, Ecologia e Antropologia Applicata" degree at the University of Rome Tor Vergata. It is worth **2 CFU** for a total of 16 hours to be administered in person.
+
+-   The course will be thought in Italian unless international students are present. In this latter case the course will be thought in English. All the material and the literature used (including this website!) will be in English.
+
+-   No specific prior knowledge of is required, but rudiments of basic GIS will definitely help. Students will be extensively exposed to various software and web-tools. Problem-solving skills and a good knowledge of your own computer OS structure and function will definitely be useful.
+
+-   Classes are on Monday (11:00-13:00) and Thursday (16:00-18:00) in "Aula Pesca" (Laboratori di Ecologia Sperimentale ed Acquacoltura).
+
+-   [It is a student's responsibility to periodically check the course website to make sure he/she has the most updated information about the course schedule!!]{style="color: red;"}
+
+## Course evaluation
+
+-   Participation to class count towards your final grade.
+
+-   At the end of the course you will be evaluated with a written exam.
+
+## Material covered in class
+
+::: columns
+::: {.column width="50%"}
+-   Setting up your computers
+    -   Brief introduction to R
+    -   Packages to install
+-   Animal tracking
+    -   Tagging systems
+-   CRS
+    -   Telemetry and GPS
+-   On-line databases
+    -   GBIF
+    -   Movebank
+-   Drivers of species distribution
+:::
+
+::: {.column width="50%"}
+-   Home range estimates
+    -   MPC
+    -   KDE
+    -   Kriging
+    -   BBM
+-   Species distribution modeling
+    -   Resource selection functions
+    -   Step selection functions
+-   Modeling approaches
+:::
+:::
+
+## Resources
+
+-   Habitat Suitability and Distribution Models [@Guisan2020]
+-   Literature I will provide every class
+-   You are encouraged to contact me by e-mail with questions and doubts or come to my office.
+
+## Material covered in class
+
+::: columns
+::: {.column width="50%"}
+-   [Setting up your computers]{style="color: Red;"}
+    -   [Brief introduction to R]{style="color: Red;"}
+    -   [Packages to install]{style="color: Red;"}
+-   [Animal tracking]{style="color: GhostWhite;"}
+    -   [Tagging systems]{style="color: GhostWhite;"}
+-   [CRS]{style="color: GhostWhite;"}
+    -   [Telemetry and GPS]{style="color: GhostWhite;"}
+-   [On-line databases]{style="color: GhostWhite;"}
+    -   [GBIF]{style="color: GhostWhite;"}
+    -   [Movebank]{style="color: GhostWhite;"}
+-   [Drivers of species distribution]{style="color: GhostWhite;"}
+:::
+
+::: {.column width="50%"}
+-   [Home range estimates]{style="color: GhostWhite;"}
+    -   [MPC]{style="color: GhostWhite;"}
+    -   [KDE]{style="color: GhostWhite;"}
+    -   [Kriging]{style="color: GhostWhite;"}
+    -   [BBM]{style="color: GhostWhite;"}
+-   [Species distribution modeling]{style="color: GhostWhite;"}
+    -   [Resource selection functions]{style="color: GhostWhite;"}
+    -   [Step selection functions]{style="color: GhostWhite;"}
+-   [Modeling approaches]{style="color: GhostWhite;"}
+:::
+:::
+
+# Setting up your computers
+
+------------------------------------------------------------------------
+
+To visualize and analyse data we will be using **R** and **RStudio**. These are free, cross-platform software.
+
+-   Connect to Wi-Fi
+
+-   Visit the **R** <https://cran.r-project.org> page and download the **R** version compatible to your OS. Install the software following the instructions.
+
+-   Visit the **RStudio** <https://www.rstudio.com/products/rstudio/download/> page and download the **RStudio** Desktop version compatible with your OS. Install the software following the instructions. Most recently **RStudio** has changed its name in to **Posit** <https://posit.co>, but the core idea is the same!
+
+::: callout-important
+**RStudio** is an Integrated Development Environment (IDE) within which it should be easier to organize your **R** workflow. [Learning all the specifics of **R** and **RStudio** is beyond the scope of this course and it is a student's responsibility to learn the basics of these tools. That being said, you can always write me with your questions if something does not work on your computer and I will help troubleshooting potential issues.]{.underline}
+:::
+
+------------------------------------------------------------------------
+
+![RStudio screenshot. You can change many of the aspects parameters (colors, font, panes etc.etc...).](../figures/class1/1_1_r_rstudio.png){fig-alt="R-Studio screenshot" fig-align="center"}
+
+## Brief intro to R and RStudio
+
+### A *number cruncher* on steroids
+
+```{r sum}
+# basic arithmetic
+3 + 5
+```
+
+```{r assign_val}
+# assigning values to object
+a <- 5
+b <- 3
+(c <- a + b)
+
+```
+
+```{r equation}
+# multiple type of data
+str(x <- a)
+str(y <- "a")
+str(z <- c(T, F))
+```
+
+------------------------------------------------------------------------
+
+```{r matrix}
+# a matrix
+(mtrx_ex <- matrix(1:9, nrow = 3, ncol = 3))
+```
+
+<br/>
+
+```{r df}
+# a data frame
+(df_ex <- as.data.frame(mtrx_ex))
+```
+
+<br/>
+
+```{r df2}
+# another data frame
+(df_ex <- data.frame(id = c(1, 2, 3),
+                     species = c("cat", "dog", "lion"),
+                     is.domestic = c(T, T, F)))
+```
+
+------------------------------------------------------------------------
+
+### Basic installation
+
+```{r sI}
+sessionInfo()
+```
+
+## Packages
+
+There are thousands of available libraries (aka, *packages*) that can be used to perform very specific analyses and produce publication-grade graphical output.
+
+```{r packs}
+sI <- sessionInfo()
+sI$basePkgs
+```
+
+```{r installed_packs}
+rownames(installed.packages())
+```
+
+#### How to install new packages
+
+```{r installnew, include=TRUE, eval=FALSE}
+install.packages("ggplot2", repos = "https://cloud.r-project.org")
+```
+
+------------------------------------------------------------------------
+
+```{r loadpck}
+library(ggplot2)
+```
+
+**R** comes with a great help system that everybody is encouraged to read extensively and consult every time they are experiencing issues when running some code or using a function.
+
+```{r help}
+?geom_segment
+```
+
+------------------------------------------------------------------------
+
+```{r packs_plot, echo = F, cache = T, fig.cap = "Trend of some packages downloaded from CRAN", fig.align="center", out.width=1500, out.height=700}
+dwnlds <- cran_downloads(from = "2012-01-01",
+                         to = "2023-02-12",
+                         packages = c("ggmap", "sf", "tmap", "move",
+                                      "raster", "rgdal", "sp", "mapview", 
+                                      "ggplot2", "rgdal", "leaflet", "terra"))
+
+plot_ly(
+  data = dwnlds,
+  x = ~date,
+  y = ~count,
+  color = ~package,
+  type = 'scatter', mode = 'lines'
+)
+```
+
+------------------------------------------------------------------------
+
+## Useful packages
+
+::: callout-warning
+Before we move forward with the installation of useful packages, if you have a Windows computer you PROBABLY need to install one additional package named *Rtools*. Go to <https://cran.r-project.org/bin/windows/Rtools/rtools42/rtools.html>. Download and install **Rtools42 installer**.
+:::
+
+<br/>
+
+```{r, include=TRUE, eval=FALSE}
+# For everyone
+source("/Users/giulianocolosimo/Documents/websites/animal_tracking_in_biologia_della_conservazione/code/install_packages/installPackages.R")
+```
+
+## Material covered in class
+
+::: columns
+::: {.column width="50%"}
+-   [Setting up your computers]{style="color: LimeGreen;"}
+    -   [Brief introduction to R]{style="color: LimeGreen;"}
+    -   [Packages to install]{style="color: LimeGreen;"}
+-   [Animal tracking]{style="color: red;"}
+    -   [Tagging systems]{style="color: red;"}
+-   [CRS]{style="color: GhostWhite;"}
+    -   [Telemetry and GPS]{style="color: GhostWhite;"}
+-   [On-line databases]{style="color: GhostWhite;"}
+    -   [GBIF]{style="color: GhostWhite;"}
+    -   [Movebank]{style="color: GhostWhite;"}
+-   [Drivers of species distribution]{style="color: GhostWhite;"}
+:::
+
+::: {.column width="50%"}
+-   [Home range estimates]{style="color: GhostWhite;"}
+    -   [MPC]{style="color: GhostWhite;"}
+    -   [KDE]{style="color: GhostWhite;"}
+    -   [Kriging]{style="color: GhostWhite;"}
+    -   [BBM]{style="color: GhostWhite;"}
+-   [Species distribution modeling]{style="color: GhostWhite;"}
+    -   [Resource selection functions]{style="color: GhostWhite;"}
+    -   [Step selection functions]{style="color: GhostWhite;"}
+-   [Modeling approaches]{style="color: GhostWhite;"}
+:::
+:::
+
+# Animal tracking, the basics!
+
+------------------------------------------------------------------------
+
+Animal Tracking is a discipline allowing to gather information about the [biology, ecology, behavior and life history of animals starting from data on their position in the natural environment]{.underline}. Major requirements:
+
+::: incremental
+-   the capability to uniquely identify individuals, populations or species [@Costa2015];
+-   the availability of position data for that individual (population or species) and a geographic reference system that helps minimizing errors when making calculations [@Guisan2000]
+-   the availability of reliable environmental data!
+:::
+
+------------------------------------------------------------------------
+
+## Tagging systems
+
+A tag is a label! A tagging system is a way of labeling "something" to provide that something with an unique identifier. People have been tagging animals (wild and captive) for hundreds of years. An animal tag can be as simple as a piece of metal or plastic with a number carved on it or with a standardized meaning.
+
+## ![A male Cyclura carinata with colored bead tags. Photo credits: Giuliano Colosimo.](../figures/class1/1_2_iguana_beads.png){fig-align="center"}
+
+### Passive Integrated Transponders (PIT)
+
+These tags are widely used for wildlife fauna, especially in long-term capture-mark-recapture studies. They uniquely identify individuals. They generally do not carry any other information but the individual's ID. They are based on the RFID (Radio-Frequency-Identification) system. When the tag is within reach of a specific radio frequency, it emits a signal containing an alpha-numeric code unique to the animal it has been implanted.
+
+## ![A Passive Integrated Transponder by Trovan®. Photo credits: Giuliano Colosimo.](../figures/class1/1_3_pit.png){fig-align="center"}
+
+### Patterns tagging
+
+::: columns
+::: {.column width="50%"}
+#### Toes and nail clipping
+
+![This image is from @Waichman1992. The author describes all possible combination of toe clipping to uniquely identify individuals](../figures/class1/1_4_toe_clipping.png){fig-align="center"}
+:::
+
+::: {.column width="50%"}
+#### Features tag
+
+![Toads of the genus *Bombina* have unique spotted patterns. Photo credits: [marioeffe](https://www.naturamediterraneo.com/forum/topic.asp?TOPIC_ID=273624)](../figures/class1/1_5_morpho_pattern.png){fig-align="center"}
+:::
+:::
+
+------------------------------------------------------------------------
+
+### Photo tagging
+
+More modern approaches rely on the use of morphometric cues to identify individuals! These techniques are more complex, but somewhat similar to the FaceID technology on your phones.
+
+## ![Development of a photo recognition software to identify iguanas in the wild. Image courtesy of Nathalie Duporge. A nice example and protocol of the use of photografies for the identification of unique individuals is presented in](../figures/class1/1_6_software_id.png){fig-align="center"}
+
+### Molecular tags
+
+From the [USGS](https://www.usgs.gov/centers/fort-collins-science-center/science/molecular-tagging) website:
+
+> Molecular tagging is a new application of molecular genetic techniques to traditional mark-recapture methodology designed to address situations where traditional methods fail. In such studies, non-invasively collected samples (such as feces, feathers, or fur) are used as a source of DNA that is then genotyped at multiple loci such that each individual animal can be uniquely identified. Thus, each individual's DNA represents a unique tag analogous to a band or other mark used in traditional mark-recapture studies.
+
+------------------------------------------------------------------------
+
+![Selected species and locations for which genetic tagging for demographic insights into population density, growth rates, direct measures of connectivity, or human--wildlife conflict has been successfully applied. Projects using genetic tagging for these demographic insights have been conducted on every continent, except Antarctica, and have sampled a variety of taxa, using many different sources of DNA, but are biased toward mid-large sized mobile mammals. After @Lamb2019](../figures/class1/1_7_genetic_tagging_b.png){fig-align="center"}
+
+------------------------------------------------------------------------
+
+### Telemetry study
+
+Small devices transmitting specific radio frequencies have been, and still are, widely used to track animals. Telemetry (𝛕𝛈𝛌𝛆 = far, 𝛍𝛆𝛕𝛒𝛐𝛎 = measurement) is a technique that allows to retrieve real time data and information using an array of wireless data transfer protocols.
+
+::: columns
+::: {.column width="50%"}
+![Barrell transmitter implanted in a female Turks and Caicos Rainbow Boa (*Chilabothrus chrysogaster*). Photo credits: Giuliano Colosimo.](../figures/class1/1_8_boa_transmitter.png){fig-align="center"}
+:::
+
+::: {.column width="50%"}
+![Radio-telemetry has been, and still is, widely used to retrieve information about the whereabouts of tagged individuals. Photo credits: Giuliano Colosimo.](../figures/class1/1_9_reynolds_antenna.png){fig-align="center"}
+:::
+:::
+
+------------------------------------------------------------------------
+
+### Satellite tags
+
+More complex electronic devices that not only identify an individual, but also provide useful information about that animal and its environment [@Loreti2019; @Loreti2020; @Colosimo2022b].
+
+![A male *Conolophus marthae* with a Wireless Sensor Node (WSN) attached behind its hindlegs. This is a more sofisticated electronic tag that not only allows to identify the individual but also allows to collect important information such as GPS data, temperature and UV light. Photo credits: Giuliano Colosimo.](../figures/class1/1_10_iguana_wsn.png){fig-align="center"}
+
+------------------------------------------------------------------------
+
+### Data visualization
+
+Eventually, data can be organized and analyzed to produce really informative (and cool!) animations.
+
+::: columns
+::: {.column width="50%"}
+![Migration patterns of cranes (*Grus grus*) from Sweden. The data was downloaded from [www.movebank.org](www.movebank.org).](../figures/class1/1_11_cranes.gif){fig-align="center"}
+:::
+
+::: {.column width="50%"}
+
+:::
+:::
+
+```{r, echo=F, eval=F}
+#![3D reconstruction of Volcan Wolf, with habitat layer and the track of an individual.](../figures/class1/1_12_wlf_environment.gif){fig-align="center"}
+
+```
+
+
+------------------------------------------------------------------------
+
+### Data simulation
+
+
+```{r echo=F, eval=F}
+#![A very useful tool to study animal movements is represented by models and #simulations](../figures/class1/1_13_random_walk_simulation.gif){fig-align="center"}
+
+```
+
+
+
+# Litterature assignment (and a little fun)
+
+# References

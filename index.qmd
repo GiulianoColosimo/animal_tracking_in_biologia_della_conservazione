@@ -1,0 +1,9 @@
+---
+title: "Animal-tracking nella Biologia della Conservazione"
+author: Giuliano Colosimo
+date: "`r Sys.Date()`"
+---
+
+# Introduction
+
+Welcome to class! These web-pages contain all the information you need to accomplish your class work for  **Animal Tracking nella Biologia della Conservazione**.

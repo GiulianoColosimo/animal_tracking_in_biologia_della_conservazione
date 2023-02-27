@@ -1,0 +1,319 @@
+---
+title: "Animal tracking nella biologia della conservazione"
+subtitle: "Class 2"
+#footer:  "[http://localhost:7619/home.html](http://localhost:7619/home.html)"
+logo: ../figures/anmtbc_logo.png
+footer:  "Dr. Giuliano Colosimo"
+format: 
+  revealjs:
+    width: 1600
+    height: 900 
+    theme: slides.scss
+    multiplex: true
+    transition: fade
+    slide-number: true
+    preview-links: true
+    chalkboard: 
+      boardmarker-width: 5
+editor: visual
+from: markdown+emoji
+execute:
+  freeze: auto
+editor_options: 
+  chunk_output_type: console
+bibliography: /Users/giulianocolosimo/Dropbox/manuscripts/literature/bibtex/comprehensive_database.bib
+csl: /Users/giulianocolosimo/Dropbox/manuscripts/literature/bibtex/apa_5th_edition.csl
+citation_package: biblatex
+citecolor: "red"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library("plotrix")
+```
+
+## Main topics
+
+::: columns
+::: {.column width="50%"} 
+
+- [Setting up your computers]{style="color: GhostWhite;"}
+    - [Brief introduction to R]{style="color: GhostWhite;"}
+    - [Packages to install]{style="color: GhostWhite;"}
+- [Animal tracking]{style="color: GhostWhite;"}
+- [CRS]{style="color: red;"}
+    - [Telemetry and GPS]{style="color: red;"}
+- [On-line databases]{style="color: GhostWhite;"}
+- [Drivers of species distribution]{style="color: GhostWhite;"}
+- [Home range estimates]{style="color: GhostWhite;"}
+
+:::
+
+::: {.column width="50%"}
+
+- [Species distribution modeling]{style="color: GhostWhite;"}
+
+- [Modeling approaches]{style="color: GhostWhite;"}
+
+:::
+:::
+
+
+# Coordinate Reference Systems (CRS)
+
+---
+
+- A coordinate reference system allows us to use coordinates to locate features on a map. It is a rather important component of tracking, especially when dealing with animals that move significant distances.
+
+- One of the main issue is that ultimately what we try to do is to represent locations measured on a 3D surface (the earth) to a 2D map. This introduces distortions and errors. 
+
+- Another issue is represented by the fact that the earth is not smooth surface. We can visualize the problem [here!](http://icgem.gfz-potsdam.de/vis3d/longtime)
+
+- We recognize two big classes of coordinate systems:
+
+---
+
+::: columns
+::: {.column width="50%"} 
+
+#### Geographic coordinates
+
+- The earth is represented by a spherical or ellipsoidal surface. The geometric representation of the earth that is used (reference-frame) is called *datum*. The measurement of distances between points cannot be carried out with geographical coordinates.
+
+:::
+
+::: {.column width="50%"} 
+
+![Angles (degrees; longitude and latitude), pointing out locations on a spherical or ellipsoidal surface. [Image source.](https://en.wikipedia.org/wiki/Geographic_coordinate_system)](../figures/class2/2_1_geographic.png){fig-align="center"}
+
+:::
+
+:::
+
+---
+
+::: columns
+::: {.column width="50%"} 
+
+#### Projected coordinates
+
+- Measured on a two-dimensional flat space (e.g. in meters; x and y), related to an ellipsoid by projection. In the transition from geometric coordinates to projected ones, a deformation of the images occurs. 
+
+:::
+
+::: {.column width="50%"}
+
+![There is no system of projections that is not affected by errors and distortions. [Image source.](https://en.wikipedia.org/wiki/Geographic_coordinate_system)](../figures/class2/2_2_projected.png){align="center"}
+
+:::
+:::
+
+# Telemetry e GPS
+
+---
+
+::: columns
+::: {.column width="50%"}
+
+- The term telemetry (𝛕𝛈𝛌𝛆 = far, 𝛍𝛆𝛕𝛒𝛐𝛎 = measurement) refers to an ensemble of techniques that allow to retrieve real time data and information using an array of wireless data transfer protocols.
+
+- The acronym GPS stands for Global Positioning System GPS
+    - NAVSTAR = NAVigation System with Timing And Ranging
+    - n ≥ 4 satellites
+    - m ≥ 1 receivers
+    - Pseudo-ranges
+:::
+
+::: {.column width="50%"}
+
+![Satellite constellation serving the GPS system. [Image source](https://en.wikipedia.org/wiki/File:ConstellationGPS.gif)](../figures/class2/2_3_constellationGPS.gif){align="center" width=110%}
+
+:::
+:::
+
+---
+
+### How does positioning with range works?
+  
+```{r positioning_1, echo=FALSE, fig.align='center'}
+plot(x = 1:20, y = 1:20, xlim = c(1, 20), ylim = c(1, 20), type = "n", asp = 1,
+     xlab = "", ylab = "", main = "Positioning with ranges",
+     xaxt = 'n', yaxt = 'n')
+points(x = 5 + 2, y = 7, pch = 21, bg = "red", cex = 2)
+legend("topleft", legend = c("Point of interest (unknown)"),
+       pch = 21, pt.bg = "red", pt.cex = 2)
+```
+
+---
+
+```{r positioning_2, echo=FALSE, fig.align='center'}
+plot(x = 1:20, y = 1:20, xlim = c(1, 20), ylim = c(1, 20), type = "n", asp = 1,
+     xlab = "", ylab = "", main = "Positioning with ranges",
+     xaxt = 'n', yaxt = 'n')
+points(x = 5 + 2, y = 7, pch = 21, bg = "red", cex = 2)
+points(x = 5, y = 7, pch = 21, bg = "blue", cex = 1.5)
+legend("topleft", legend = c("Point of interest (unknown)",
+                             "Reference point (known)"),
+       pch = c(21, 21), pt.bg = c("red", "blue"),
+       pt.cex = c(2, 1.5))
+```
+
+---
+
+```{r positioning_3, echo=FALSE, fig.align='center'}
+plot(x = 1:20, y = 1:20, xlim = c(1, 20), ylim = c(1, 20), type = "n", asp = 1,
+     xlab = "", ylab = "", main = "Positioning with ranges",
+     xaxt = 'n', yaxt = 'n')
+points(x = 5 + 2, y = 7, pch = 21, bg = "red", cex = 2)
+points(x = 5, y = 7, pch = 21, bg = "blue", cex = 1.5)
+segments(x0 = 5, y0 = 7, x1 = 5 + 2, y1 = 7)
+draw.circle(x = 5, y = 7, radius = 2, border = "black", lty = 2)
+legend("topleft", legend = c("Point of interest (unknown)",
+                             "Reference point (known)",
+                             "Distance"),
+       pch = c(21, 21, NA), lty = c(NA, NA, 1), pt.bg = c("red", "blue"),
+       pt.cex = c(2, 1.5))
+```
+
+---
+
+```{r positioning_4, echo=FALSE, fig.align='center'}
+plot(x = 1:20, y = 1:20, xlim = c(1, 20), ylim = c(1, 20), type = "n", asp = 1,
+     xlab = "", ylab = "", main = "Positioning with ranges",
+     xaxt = 'n', yaxt = 'n')
+points(x = 5 + 2, y = 7, pch = 21, bg = "red", cex = 2)
+points(x = 5, y = 7, pch = 21, bg = "blue", cex = 1.5)
+segments(x0 = 5, y0 = 7, x1 = 5 + 2, y1 = 7)
+draw.circle(x = 5, y = 7, radius = 2, border = "black", lty = 2)
+points(x = 8,  y = 12, pch = 21, bg = "blue", cex = 1.5)
+segments(x0 = 5 + 2, y0 = 7, x1 = 8,  y1 = 12)
+AB <- sqrt((8 - (5 + 2))^2 + (12 - 7)^2)
+draw.circle(x = 8, y = 12, radius = AB, border = "black", lty = 2)
+legend("topleft", legend = c("Point of interest (unknown)",
+                             "Reference point (known)",
+                             "Distance"),
+       pch = c(21, 21, NA), lty = c(NA, NA, 1), pt.bg = c("red", "blue"),
+       pt.cex = c(2, 1.5))
+```
+
+---
+
+```{r positioning_5, echo=FALSE, fig.align='center'}
+plot(x = 1:20, y = 1:20, xlim = c(1, 20), ylim = c(1, 20), type = "n", asp = 1,
+     xlab = "", ylab = "", main = "Positioning with ranges",
+     xaxt = 'n', yaxt = 'n')
+points(x = 5 + 2, y = 7, pch = 21, bg = "red", cex = 2)
+points(x = 5, y = 7, pch = 21, bg = "blue", cex = 1.5)
+segments(x0 = 5, y0 = 7, x1 = 5 + 2, y1 = 7)
+draw.circle(x = 5, y = 7, radius = 2, border = "black", lty = 2)
+points(x = 8,  y = 12, pch = 21, bg = "blue", cex = 1.5)
+segments(x0 = 5 + 2, y0 = 7, x1 = 8,  y1 = 12)
+AB <- sqrt((8 - (5 + 2))^2 + (12 - 7)^2)
+draw.circle(x = 8, y = 12, radius = AB, border = "black", lty = 2)
+points(x = 17,  y = 5, pch = 21, bg = "blue", cex = 1.5)
+segments(x0 = 5 + 2, y0 = 7, x1 = 17,  y1 = 5)
+AC <- sqrt((17 - (5 + 2))^2 + (5 - 7)^2)
+draw.circle(x = 17, y = 5, radius = AC, border = "black", lty = 2)
+legend("topleft", legend = c("Point of interest (unknown)",
+                             "Reference point (known)",
+                             "Distance"),
+       pch = c(21, 21, NA), lty = c(NA, NA, 1), pt.bg = c("red", "blue"),
+       pt.cex = c(2, 1.5))
+```
+
+---
+
+- As you know, distance is a function of time and speed. We can assume with a certain degree of confidence that the speed of our radio signal is fairly constant ($3*10^5$Km/s). If our estimate of time is error-prone, the associated estimate of distance may also be affected by errors. That is why the distance is actually called pseudo-distance.
+
+- To minimize this error a forth reference point (satellite) is necessary!
+  
+- The GPS receiver knows the position of the satellite because it is the satellite itself that sends it by communicating its orbit in a navigation message (ephemeris).
+
+# Making maps in R
+
+---
+
+```{r world, echo=TRUE}
+library(spData)
+library(spDataLarge)
+library(sf)
+
+world
+
+```
+
+. . .
+
+<br/>
+
+```{r world1, echo=TRUE}
+class(world)
+```
+
+---
+
+
+```{r world3, echo=TRUE, fig.align = 'center'}
+library(tidyr)
+
+world %>% 
+  st_geometry() %>% 
+  plot(main = "WGS84")
+```
+
+---
+
+::: columns
+
+::: {.column width="50%}
+```{r echo=TRUE, fig.align='center'}
+world %>%
+  st_transform("+proj=laea +x_0=0 +y_0=0 +lon_0=0 +lat_0=0") %>% 
+  st_geometry() %>% 
+  plot(main = "Lambert azimuthal equal-area.")
+```
+:::
+
+::: {.column width="50%}
+:::{.fragment}
+```{r echo=TRUE, fig.align='center'}
+world %>%
+  st_transform("+proj=aeqd +x_0=0 +y_0=0 +lon_0=0 +lat_0=0") %>% 
+  st_geometry() %>% 
+  plot(main = "Azimuthal equi-distant")
+```
+:::
+:::
+:::
+
+---
+
+::: columns
+::: {.column width="50%}
+```{r echo=TRUE, fig.align='center'}
+world %>%
+  st_transform("+proj=cea +zone=15 +datum=WGS84 +units=m +no_defs") %>% 
+  st_geometry() %>% 
+  plot(main = "Equal area cylindrical")
+```
+:::
+
+::: {.column width="50%}
+:::{.fragment}
+```{r echo=TRUE, fig.align='center'}
+world %>%
+  st_transform("+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +wktext  +no_defs") %>% 
+  st_geometry() %>% 
+  plot(main = "Pseudo-Mercator")
+
+```
+:::
+:::
+:::
+
+---
+
+
+
+# References
+
